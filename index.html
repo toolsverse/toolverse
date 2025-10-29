@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TOOLVERSE — Professional Violet Tools</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg-a:#2b0056;
+  --bg-b:#5a1aa6;
+  --card:#0f1724;
+  --muted: #d7cfff;
+  --accent: #8b5cf6;
+  --glass: rgba(255,255,255,0.04);
+  --shadow: 0 12px 30px rgba(6,6,7,0.5);
+  --radius:14px;
+  --maxw:1100px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;color:var(--muted);-webkit-font-smoothing:antialiased}
+body{
+  background: linear-gradient(120deg,var(--bg-a),var(--bg-b));
+  background-size: 400% 400%;
+  animation: gradientMove 18s ease infinite;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* gradient animation */
+@keyframes gradientMove {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+.container{max-width:var(--maxw);margin:36px auto;padding:20px}
+
+/* header */
+.header{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:18px;text-align:center}
+.logo{font-weight:800;font-size:52px;letter-spacing:2px;color:white;
+  background: linear-gradient(90deg,#ffffff,#cdb6ff 60%, #b6f0ff 100%);
+  -webkit-background-clip: text; background-clip:text; color:transparent;
+  text-transform:uppercase;
+}
+.search-bar{width:72%;max-width:820px;display:flex;gap:10px;justify-content:center}
+.search-bar input{
+  flex:1;padding:14px 16px;border-radius:999px;border:1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02); color: #fff; outline:none; font-size:15px;
+}
+.search-bar button{
+  padding:12px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),#b794f4);
+  color:white; cursor:pointer; box-shadow: var(--shadow);
+}
+
+/* grid */
+.tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:18px}
+@media (max-width:980px){ .tools-grid{grid-template-columns:1fr} .search-bar{width:94%} }
+
+.tool-box{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); border:1px solid rgba(255,255,255,0.03);
+  transform: translateY(18px); opacity: 0; transition: transform .55s cubic-bezier(.2,.9,.2,1), opacity .55s;
+}
+.tool-box.visible{ transform: none; opacity: 1; }
+
+/* title */
+.tool-title{display:flex;align-items:center;gap:12px}
+.ico{width:48px;height:48px;border-radius:10px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff}
+.tool-title h3{margin:0;color:#fff;font-size:18px}
+.tool-desc{margin-top:8px;color:rgba(255,255,255,0.8);font-size:13px}
+
+/* panel content small */
+.panel{margin-top:12px;padding-top:10px;border-top:1px dashed rgba(255,255,255,0.03)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+label{font-size:13px;color:var(--muted)}
+input[type="file"]{color:var(--muted)}
+input[type="text"], input[type="number"], textarea, select{
+  padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);
+  background:transparent;color:var(--muted);font-size:14px;
+}
+textarea{min-height:140px;resize:vertical}
+.btn{padding:8px 12px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),#b794f4);color:white;cursor:pointer}
+.small{font-size:13px;color:rgba(255,255,255,0.8)}
+.hint{font-size:12px;color:#e6dcff;margin-top:8px}
+
+/* preview canvas and images */
+.canvas-preview{width:100%;border-radius:10px;background:#08060a;margin-top:12px;display:block;}
+
+/* other sections */
+.section{margin-top:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.02);box-shadow:var(--shadow)}
+.features{display:flex;gap:12px;flex-wrap:wrap}
+.feature{flex:1;min-width:180px;background:rgba(255,255,255,0.02);padding:12px;border-radius:10px}
+.faq-item{margin-top:10px}
+.faq-q{cursor:pointer;padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);font-weight:600}
+.faq-a{padding:12px;margin-top:6px;background:rgba(255,255,255,0.01);border-radius:8px;display:none}
+
+/* footer */
+.footer{margin-top:28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:rgba(255,255,255,0.8);font-size:13px}
+.footer .col{min-width:160px}
+
+/* small helpers */
+.hr{height:1px;background:rgba(255,255,255,0.03);margin:12px 0;border-radius:2px}
+.notice{background:#2b103a;padding:10px;border-radius:8px;color:#e9d8ff;border:1px solid rgba(255,255,255,0.03)}
+.center{text-align:center}
+.code{font-family:monospace;background:rgba(0,0,0,0.18);padding:6px;border-radius:6px}
+/* ===== Tool Layout - Vertical Style ===== */
+.tools-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 40px;
+  width: 100%;
+}
+
+/* Each tool box/card */
+.tool-box {
+  width: 85%;
+  max-width: 900px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 30px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.tool-box:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Add clean space around the page */
+body {
+  padding: 50px 0 100px 0;
+}
+
+/* Optional: add soft dividers between tools */
+.tool-box:not(:last-child)::after {
+  content: "";
+  display: block;
+  width: 70%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 35px auto 0;
+}
+
+</style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header" role="banner">
+      <div class="logo">TOOLVERSE</div>
+      <div class="search-bar">
+        <input id="mainSearch" placeholder="Search tools">
+        <button id="searchBtn">Search</button>
+      </div>
+      
+    </header>
+
+    <!-- Tools Grid -->
+    <section class="tools-container" id="toolsGrid">
+
+      <!-- 1. Image Compressor (quality only, keep dims) -->
+      <div class="tool-box" id="box-compress">
+        <div class="tool-title">
+          <div class="ico">🖼️</div>
+          <div>
+            <h3>Image Compressor</h3>
+            <div class="small">Compress by target file size (KB / MB). Image dimensions won't change.</div>
+          </div>
+        </div>
+        <div class="tool-desc">
+          <div class="row" style="margin-top:10px">
+            <input id="compressFile" type="file" accept="image/*">
+            <input id="targetSize" type="text" placeholder="Target like 200KB or 1.5MB" style="width:170px">
+            <select id="compressFormat"><option value="image/jpeg">JPEG</option><option value="image/png">PNG</option></select>
+            <button id="compressBtn" class="btn">Compress</button>
+          </div>
+          <div class="hint">Enter realistic size. Compressor adjusts JPEG quality to hit the target. PNG is lossless (quality not effective).</div>
+
+          <div class="panel" id="compressPanel" style="display:none">
+            <div id="compressInfo" class="small"></div>
+            <canvas id="compressCanvas" class="canvas-preview"></canvas>
+            <div style="margin-top:12px" class="row">
+              <button id="downloadCompressed" class="btn" disabled>Download Compressed</button>
+              <button id="resetCompress" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06)">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. QR Generator (text/url/image -> QR) -->
+      <div class="tool-box" id="box-qr">
+        <div class="tool-title">
+          <div class="ico">🔳</div>
+          <div>
+            <h3>QR Code Generator</h3>
+            <div class="small">Generate QR from Text, URL, or Image (small images only).</div>
+          </div>
+        </div>
+        <div class="tool-desc">
+          <div class="row" style="margin-top:10px">
+            <select id="qrMode">
+              <option value="text">Text</option>
+              <option value="url">URL</option>
+              <option value="image">Image</option>
+            </select>
+
+            <input id="qrInput" type="text" placeholder="Enter text or URL" style="flex:1">
+            <input id="qrFile" type="file" accept="image/*" style="display:none">
+            <select id="qrSize"><option>256</option><option selected>512</option><option>768</option></select>
+            <button id="qrGenerate" class="btn">Generate</button>
+          </div>
+
+          <div class="panel" id="qrPanel" style="display:none">
+            <div id="qrInfo" class="small"></div>
+            <div id="qrPreview" style="margin-top:12px"></div>
+            <div style="margin-top:12px" class="row">
+              <button id="downloadQR" class="btn" disabled>Download QR</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Unit Converter -->
+      <div class="tool-box" id="box-unit">
+        <div class="tool-title">
+          <div class="ico">⚖️</div>
+          <div>
+            <h3>Unit Converter</h3>
+            <div class="small">Length, Weight, Temperature</div>
+          </div>
+        </div>
+        <div class="tool-desc">
+          <div class="row" style="margin-top:10px">
+            <input id="unitValue" type="number" placeholder="Value" style="width:140px">
+            <select id="unitType"><option value="length">Length</option><option value="weight">Weight</option><option value="temp">Temperature</option></select>
+            <select id="unitFrom"></select>
+            <select id="unitTo"></select>
+            <button id="unitConvertBtn" class="btn">Convert</button>
+          </div>
+          <div id="unitResult" class="small" style="margin-top:10px">Result: —</div>
+        </div>
+      </div>
+
+      <!-- 4. Image -> PDF -->
+      <div class="tool-box" id="box-imgpdf">
+        <div class="tool-title">
+          <div class="ico">📄</div>
+          <div>
+            <h3>Image → PDF</h3>
+            <div class="small">Upload 1+ images to merge into a single PDF document.</div>
+          </div>
+        </div>
+        <div class="tool-desc">
+          <div class="row" style="margin-top:10px">
+            <input id="pdfFiles" type="file" accept="image/*" multiple>
+            <input id="pdfName" type="text" placeholder="Filename (e.g., album)" style="width:180px">
+            <button id="pdfCreate" class="btn">Create PDF</button>
+          </div>
+          <div id="pdfInfo" class="small" style="margin-top:10px"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How to Use -->
+    <section class="section">
+      <h3>How to use these tools</h3>
+      <ol>
+        <ol>
+        <li><strong>Image Compressor:</strong> Upload image → type target size (e.g., 200KB) → click <em>Compress</em> → download compressed file. Dimensions are preserved.</li>         
+        <li><strong>QR Generator:</strong> Choose Text/URL/Image. For image mode use small images (&lt;100KB). Generate and download QR.</li>
+        <li><strong>Unit Converter:</strong> Select type, input value and units, then convert.</li>
+       <ol></ol>
+        <li><strong>Image → PDF:</strong> Select images in order and click <em>Create PDF</em>.</li>
+      </ol>
+    </section>
+
+    <!-- Key Features -->
+    <section class="section">
+      <h3>Key Features</h3>
+      <div class="features">
+        <div class="feature"><strong>Privacy-first</strong><div class="small">All processing happens in your browser; nothing is uploaded.</div></div>
+        <div class="feature"><strong>Fast & Offline</strong><div class="small">No servers — works locally on your machine.</div></div>
+        <div class="feature"><strong>Professional UI</strong><div class="small">Clean design with animated entries for a polished experience.</div></div>
+        <div class="feature"><strong>No signup</strong><div class="small">Use immediately — no accounts required.</div></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+      <h3>Frequently Asked Questions</h3>
+      <div class="faq-item">
+        <div class="faq-q">Will my files be uploaded anywhere? (click)</div>
+        <div class="faq-a">No — all operations run inside your browser. Files are not sent to any server.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How small can I compress images?</div>
+        <div class="faq-a">The compressor attempts to reach your requested size by reducing JPEG quality. Very small targets may produce noticeable artifacts — the tool will return the best result possible and inform you.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can I encode images into a QR?</div>
+        <div class="faq-a">Yes for small images. QR capacity is limited; use small compressed images (&lt;100 KB). For larger images, host the image and encode a short URL instead.</div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="section footer">
+      <div class="col">
+        <strong>About Us</strong>
+        <div class="small">ToolVerse — a set of fast, client-side utilities.</div>
+            <strong>Owner: Sabir Ali</strong>
+      </div>
+      <div class="col">
+        <strong>Links</strong>
+        <div class="small"><a href="http://127.0.0.1:5500/contact.html" style="color:inherit;text-decoration:none">Contact Us</a> • <a href="http://127.0.0.1:5500/Disclaimer.html" style="color:inherit;text-decoration:none">Disclaimer</a> • <a href="http://127.0.0.1:5500/Privacy.html" style="color:inherit;text-decoration:none">Privacy & Terms</a></div>
+      </div>
+      <div class="col center">
+        <div class="small">Created by <strong>Sabir Ali</strong></div>
+        <div class="small">Design tweaks by Sabir Ali</div>
+      </div>
+    </footer>
+  </div>
+
+<!-- External libs -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+/* ---------- Utility: parse human size to bytes ---------- */
+function parseSizeToBytes(input){
+  if (!input) return NaN;
+  const s = input.trim().toUpperCase();
+  try {
+    if (s.endsWith('GB')) return parseFloat(s.slice(0,-2)) * 1024 * 1024 * 1024;
+    if (s.endsWith('MB')) return parseFloat(s.slice(0,-2)) * 1024 * 1024;
+    if (s.endsWith('KB')) return parseFloat(s.slice(0,-2)) * 1024;
+    if (/^\d+(\.\d+)?$/.test(s)) return parseFloat(s);
+    return NaN;
+  } catch(e){ return NaN; }
+}
+
+/* ---------- Animated entry using IntersectionObserver ---------- */
+const boxes = document.querySelectorAll('.tool-box');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if (en.isIntersecting) en.target.classList.add('visible');
+  });
+},{threshold:0.12});
+boxes.forEach(b => io.observe(b));
+
+/* ---------- Image Compressor (quality-based, preserve dims) ---------- */
+const compressFile = document.getElementById('compressFile');
+const compressBtn = document.getElementById('compressBtn');
+const compressPanel = document.getElementById('compressPanel');
+const compressInfo = document.getElementById('compressInfo');
+const compressCanvas = document.getElementById('compressCanvas');
+const downloadCompressed = document.getElementById('downloadCompressed');
+const resetCompress = document.getElementById('resetCompress');
+
+let compressedBlob = null;
+
+compressBtn.addEventListener('click', async ()=>{
+  compressPanel.style.display = 'none';
+  compressInfo.textContent = '';
+  downloadCompressed.disabled = true;
+  compressedBlob = null;
+
+  const file = compressFile.files[0];
+  if (!file) return alert('Choose an image first.');
+  const targetStr = document.getElementById('targetSize').value.trim();
+  const targetBytes = parseSizeToBytes(targetStr);
+  if (!isFinite(targetBytes) || targetBytes <= 0) return alert('Enter target like 200KB or 1.5MB.');
+
+  // load image
+  const img = await new Promise((res, rej)=>{
+    const url = URL.createObjectURL(file);
+    const i = new Image();
+    i.onload = ()=>{ res(i); URL.revokeObjectURL(url); };
+    i.onerror = rej;
+    i.src = url;
+  });
+
+  // draw preview (scaled for UI)
+  const ctx = compressCanvas.getContext('2d');
+  const maxW = 1000, maxH = 600;
+  let pw = img.width, ph = img.height;
+  const pratio = Math.min(maxW/pw, maxH/ph, 1);
+  compressCanvas.width = Math.round(pw * pratio);
+  compressCanvas.height = Math.round(ph * pratio);
+  ctx.clearRect(0,0,compressCanvas.width, compressCanvas.height);
+  ctx.drawImage(img, 0, 0, compressCanvas.width, compressCanvas.height);
+  compressPanel.style.display = 'block';
+  compressInfo.textContent = `Original: ${img.width}×${img.height} — ${(file.size/1024).toFixed(1)} KB. Compressing to ${(targetBytes/1024).toFixed(1)} KB...`;
+
+  // compress via binary search on quality (JPEG)
+  async function compressBinary(imgElement, target, maxIter=14){
+    const off = document.createElement('canvas');
+    off.width = imgElement.width;
+    off.height = imgElement.height;
+    const c = off.getContext('2d');
+    c.drawImage(imgElement, 0, 0, off.width, off.height);
+
+    let lo = 0.04, hi = 0.95;
+    let best = null, bestDiff = Infinity, bestQ = hi;
+    for (let i=0;i<maxIter;i++){
+      const q = (lo + hi) / 2;
+      const blob = await new Promise(res => off.toBlob(res, 'image/jpeg', q));
+      const size = blob.size;
+      const diff = size - target;
+      if (Math.abs(diff) < Math.abs(bestDiff)) { bestDiff = diff; best = blob; bestQ = q; }
+      if (size > target) hi = q; else lo = q;
+      if (Math.abs(diff)/target < 0.02 || Math.abs(diff) < 1024) break;
+    }
+    return { blob: best, quality: bestQ };
+  }
+
+  try {
+    const result = await compressBinary(img, targetBytes, 16);
+    if (!result || !result.blob) {
+      compressInfo.textContent = 'Could not produce compressed result.';
+      return;
+    }
+    compressedBlob = result.blob;
+    compressInfo.innerHTML = `Compressed to approx ${(compressedBlob.size/1024).toFixed(1)} KB (quality ≈ ${result.quality.toFixed(2)}).`;
+    // show compressed preview
+    const previewUrl = URL.createObjectURL(compressedBlob);
+    const pImg = await new Promise(res=>{
+      const i = new Image();
+      i.onload = ()=>{ res(i); URL.revokeObjectURL(previewUrl); };
+      i.src = previewUrl;
+    });
+    const ratio = Math.min(1000/pImg.width, 600/pImg.height, 1);
+    compressCanvas.width = Math.round(pImg.width * ratio);
+    compressCanvas.height = Math.round(pImg.height * ratio);
+    ctx.clearRect(0,0,compressCanvas.width, compressCanvas.height);
+    ctx.drawImage(pImg, 0,0, compressCanvas.width, compressCanvas.height);
+
+    downloadCompressed.disabled = false;
+    downloadCompressed.onclick = ()=> {
+      const a = document.createElement('a'); a.href = URL.createObjectURL(compressedBlob); a.download = 'compressed.jpg'; a.click();
+    };
+  } catch (err) {
+    compressInfo.textContent = 'Compression error: ' + (err.message || err);
+  }
+});
+
+resetCompress.addEventListener('click', ()=>{
+  compressPanel.style.display = 'none';
+  compressFile.value = '';
+  document.getElementById('targetSize').value = '';
+  compressedBlob = null;
+});
+
+/* ---------- QR Generator (text/url/image) ---------- */
+const qrMode = document.getElementById('qrMode');
+const qrInput = document.getElementById('qrInput');
+const qrFile = document.getElementById('qrFile');
+const qrGenerate = document.getElementById('qrGenerate');
+const qrPanel = document.getElementById('qrPanel');
+const qrInfo = document.getElementById('qrInfo');
+const qrPreview = document.getElementById('qrPreview');
+const downloadQR = document.getElementById('downloadQR');
+
+qrMode.addEventListener('change', ()=>{
+  if (qrMode.value === 'image'){ qrFile.style.display = 'inline-block'; qrInput.style.display = 'none'; }
+  else { qrFile.style.display = 'inline-block'; qrInput.style.display = 'inline-block'; qrFile.style.display = 'none'; }
+  qrPreview.innerHTML = ''; qrInfo.textContent = ''; downloadQR.disabled = true;
+});
+
+async function compressImageToDataURL(file, maxBytes=1800){
+  // loads image and tries progressive scaling + quality
+  const img = await new Promise((res, rej)=>{
+    const u = URL.createObjectURL(file);
+    const i = new Image();
+    i.onload = ()=>{ res(i); URL.revokeObjectURL(u); };
+    i.onerror = rej; i.src = u;
+  });
+  const off = document.createElement('canvas'); const ctx = off.getContext('2d');
+  const attempts = [{s:0.5,q:0.7},{s:0.35,q:0.6},{s:0.25,q:0.55},{s:0.15,q:0.45},{s:0.1,q:0.35}];
+  for (const a of attempts){
+    off.width = Math.max(16, Math.round(img.width * a.s));
+    off.height = Math.max(16, Math.round(img.height * a.s));
+    ctx.clearRect(0,0,off.width,off.height);
+    ctx.drawImage(img,0,0,off.width,off.height);
+    const data = off.toDataURL('image/jpeg', a.q);
+    const approxBytes = Math.round((data.length - 'data:image/jpeg;base64,'.length) * 3/4);
+    if (approxBytes <= maxBytes) return { data, approxBytes };
+  }
+  // fallback smallest
+  off.width = Math.max(16, Math.round(img.width * 0.08)); off.height = Math.max(16, Math.round(img.height * 0.08));
+  ctx.drawImage(img,0,0,off.width, off.height);
+  const data = off.toDataURL('image/jpeg', 0.3);
+  const approxBytes = Math.round((data.length - 'data:image/jpeg;base64,'.length) * 3/4);
+  return { data, approxBytes };
+}
+
+qrGenerate.addEventListener('click', async ()=>{
+  qrPreview.innerHTML = ''; qrInfo.textContent = ''; downloadQR.disabled = true; qrPanel.style.display = 'block';
+  const size = parseInt(document.getElementById('qrSize').value) || 512;
+
+  if (qrMode.value === 'image') {
+    const f = qrFile.files[0];
+    if (!f) return alert('Choose an image file.');
+
+    if (f.size > 140 * 1024) { // warn/exclude very large files
+      if (!confirm('Image is larger than 140KB and may not fit into a QR after encoding. Try a smaller image? Continue anyway?')) {
+        return;
+      }
+    }
+
+    qrInfo.textContent = 'Compressing image for QR encoding...';
+    try {
+      const res = await compressImageToDataURL(f, 1900);
+      qrInfo.textContent = `Image compressed to ~${Math.round(res.approxBytes)} bytes; encoding into QR...`;
+      const container = document.createElement('div'); qrPreview.appendChild(container);
+      new QRCode(container, { text: res.data, width: size, height: size, correctLevel: QRCode.CorrectLevel.H });
+      downloadQR.disabled = false;
+      downloadQR.onclick = ()=> {
+        const imgEl = container.querySelector('img, canvas');
+        const href = imgEl.tagName === 'IMG' ? imgEl.src : imgEl.toDataURL('image/png');
+        const a = document.createElement('a'); a.href = href; a.download = 'qrcode.png'; a.click();
+      };
+    } catch (err) {
+      qrInfo.textContent = 'Error: ' + (err.message || err);
+    }
+  } else {
+    const textVal = qrInput.value.trim();
+    if (!textVal) return alert('Enter text or URL.');
+    qrInfo.textContent = 'Generating QR...';
+    const container = document.createElement('div'); qrPreview.appendChild(container);
+    new QRCode(container, { text: textVal, width: size, height: size, correctLevel: QRCode.CorrectLevel.H });
+    downloadQR.disabled = false;
+    downloadQR.onclick = ()=> {
+      const imgEl = container.querySelector('img, canvas');
+      const href = imgEl.tagName === 'IMG' ? imgEl.src : imgEl.toDataURL('image/png');
+      const a = document.createElement('a'); a.href = href; a.download = 'qrcode.png'; a.click();
+    };
+  }
+});
+
+/* ---------- Unit Converter ---------- */
+const unitType = document.getElementById('unitType');
+const unitFrom = document.getElementById('unitFrom');
+const unitTo = document.getElementById('unitTo');
+const unitConvertBtn = document.getElementById('unitConvertBtn');
+const unitValue = document.getElementById('unitValue');
+const unitResult = document.getElementById('unitResult');
+
+const units = {
+  length: { m:1, km:1000, cm:0.01, mm:0.001, inch:0.0254, ft:0.3048 },
+  weight: { kg:1, g:0.001, mg:0.000001, lb:0.45359237, oz:0.0283495231 }
+};
+
+function populateUnits(type){
+  unitFrom.innerHTML=''; unitTo.innerHTML='';
+  if (type === 'temp') {
+    ['C','F','K'].forEach(o => { unitFrom.append(new Option(o,o)); unitTo.append(new Option(o,o)); });
+    return;
+  }
+  Object.keys(units[type]).forEach(k => { unitFrom.append(new Option(k,k)); unitTo.append(new Option(k,k)); });
+}
+unitType.addEventListener('change', ()=> populateUnits(unitType.value));
+populateUnits('length');
+
+unitConvertBtn.addEventListener('click', ()=>{
+  const t = unitType.value; const v = parseFloat(unitValue.value);
+  if (!isFinite(v)) return alert('Enter a number');
+  if (t === 'temp') {
+    const f = unitFrom.value, to = unitTo.value;
+    let c;
+    if (f === 'C') c = v;
+    if (f === 'F') c = (v - 32) * 5/9;
+    if (f === 'K') c = v - 273.15;
+    let out;
+    if (to === 'C') out = c;
+    if (to === 'F') out = c * 9/5 + 32;
+    if (to === 'K') out = c + 273.15;
+    unitResult.textContent = `Result: ${out}`;
+    return;
+  }
+  const base = v * units[t][unitFrom.value];
+  const res = base / units[t][unitTo.value];
+  unitResult.textContent = `Result: ${res} ${unitTo.value}`;
+});
+
+/* ---------- Image -> PDF ---------- */
+const pdfFiles = document.getElementById('pdfFiles');
+const pdfCreate = document.getElementById('pdfCreate');
+const pdfInfo = document.getElementById('pdfInfo');
+
+pdfCreate.addEventListener('click', async ()=>{
+  const files = Array.from(pdfFiles.files);
+  if (files.length === 0) return alert('Please select images.');
+  pdfInfo.textContent = 'Creating PDF...';
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'px', format: 'a4' });
+  for (let i=0;i<files.length;i++){
+    const img = await new Promise((res, rej)=>{
+      const u = URL.createObjectURL(files[i]);
+      const iimg = new Image();
+      iimg.onload = ()=>{ res(iimg); URL.revokeObjectURL(u); };
+      iimg.onerror = rej;
+      iimg.src = u;
+    });
+    // scale to page width
+    const pageW = 595; // px
+    const pageH = Math.round(pageW * (img.height / img.width));
+    const canvas = document.createElement('canvas'); canvas.width = pageW; canvas.height = pageH;
+    const cctx = canvas.getContext('2d');
+    cctx.fillStyle = '#ffffff'; cctx.fillRect(0,0,canvas.width,canvas.height);
+    cctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+    if (i > 0) doc.addPage();
+    doc.addImage(dataUrl, 'JPEG', 0, 0, pageW, pageH);
+  }
+  const filename = (document.getElementById('pdfName').value || 'document') + '.pdf';
+  doc.save(filename);
+  pdfInfo.textContent = 'PDF created and downloaded.';
+});
+
+/* ---------- FAQ toggle ---------- */
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click', ()=> {
+    const a = q.nextElementSibling;
+    a.style.display = a.style.display === 'block' ? 'none' : 'block';
+  });
+});
+
+/* ---------- Search quick focus ---------- */
+document.getElementById('searchBtn').addEventListener('click', ()=>{
+  const q = document.getElementById('mainSearch').value.trim().toLowerCase();
+  if (!q) return;
+  const map = [
+    {k:'compress', el:'box-compress'},
+    {k:'image', el:'box-compress'},
+    {k:'qr', el:'box-qr'},
+    {k:'pdf', el:'box-imgpdf'},
+    {k:'convert', el:'box-unit'},
+    {k:'unit', el:'box-unit'}
+  ];
+  for (const m of map){
+    if (q.includes(m.k)){
+      const el = document.getElementById(m.el);
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+      el.style.outline = '2px solid rgba(139,92,246,0.45)';
+      setTimeout(()=> el.style.outline = 'none', 2400);
+      return;
+    }
+  }
+  alert('No matching tool found for: ' + q);
+});
+</script>
+</body>
+</html>
